@@ -1,0 +1,24 @@
+CREATE TABLE users(
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    status VARCHAR (30) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    modified_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE employees(
+    employee_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE REFERENCES users(id),
+    job_title VARCHAR(100) NOT NULL,
+    employee_role VARCHAR(40) NOT NULL
+        CHECK (employee_role IN ('MANAGER', 'SUPERVISOR', 'ADMIN', 'STAFF'))
+);
+
+CREATE TABLE customers(
+    customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY,
+    user_id INT NOT NULL UNIQUE REFERENCES users(id),
+    contact_number VARCHAR(20) NOT NULL
+);
